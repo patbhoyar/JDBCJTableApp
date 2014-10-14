@@ -1,3 +1,5 @@
+package CommonClasses;
+
 import java.sql.Date;
 
 /**
@@ -10,7 +12,7 @@ public class Contact {
     private String email;
     private Date dob;
 
-    Contact(String fname, String lname, String email, Date dob){
+    public Contact(String fname, String lname, String email, Date dob){
         this.firstName = fname;
         this.lastName = lname;
         this.email = email;

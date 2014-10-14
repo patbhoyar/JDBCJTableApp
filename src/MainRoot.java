@@ -1,4 +1,8 @@
+import Old.JTableClass;
+import BetterUI.ContactApp;
+
 import javax.swing.*;
+
 
 /**
  * Created by admin on October/13/14.
@@ -10,7 +14,7 @@ public class MainRoot {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new JTableClass();
+                new ContactApp();
             }
         });
 

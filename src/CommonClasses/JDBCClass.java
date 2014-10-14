@@ -1,3 +1,7 @@
+package CommonClasses;
+
+import CommonClasses.Contact;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +20,7 @@ public class JDBCClass {
     PreparedStatement pstmt = null;
     Statement stmt = null;
 
-    JDBCClass(){
+    public JDBCClass(){
         try {
             System.out.println("ola");
             Class.forName("com.mysql.jdbc.Driver");

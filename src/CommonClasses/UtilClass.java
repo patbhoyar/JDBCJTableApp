@@ -1,3 +1,5 @@
+package CommonClasses;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -6,35 +8,20 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class JTableClass {
+public class UtilClass {
 
-    JFrame frame;
+    static JLabel fnameLabel;
+    static JLabel lnameLabel;
+    static JLabel emailLabel;
+    static JLabel dobLabel;
+    static JButton submit;
 
-    JPanel topPanel = new JPanel();
-    JPanel bottomPanel = new JPanel();
+    static JTextField fname = new JTextField(20);
+    static JTextField lname = new JTextField(20);
+    static JTextField email = new JTextField(20);
+    static JTextField dob = new JTextField(10);
 
-    JLabel fnameLabel;
-    JLabel lnameLabel;
-    JLabel emailLabel;
-    JLabel dobLabel;
-    JButton submit;
-
-    DefaultTableModel model;
-    JTable table;
-
-    JTableClass(){
-
-        frame = new JFrame("JTable, JDBC Application");
-        frame.setLocationRelativeTo(null);
-        frame.setSize(600, 1000);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new FlowLayout());
-        frame.setVisible(true);
-
-        final JTextField fname = new JTextField(20);
-        final JTextField lname = new JTextField(20);
-        final JTextField email = new JTextField(20);
-        final JTextField dob = new JTextField(10);
+    public static void createForm(final JTable table, JPanel panel, final CardLayout cards, final JPanel body){
         fnameLabel = new JLabel("First Name");
         lnameLabel = new JLabel("Last Name");
         emailLabel = new JLabel("Email");
@@ -45,15 +32,6 @@ public class JTableClass {
         email.setMaximumSize(fname.getPreferredSize());
         dob.setMaximumSize(fname.getPreferredSize());
 
-        topPanel.setPreferredSize(new Dimension(600, 230));
-        bottomPanel.setPreferredSize(new Dimension(600, 770));
-
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-
-        JPanel container = new JPanel();
-        container.setBorder(BorderFactory.createTitledBorder("Add New Contact"));
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
         fname.setAlignmentX(Component.CENTER_ALIGNMENT);
         lname.setAlignmentX(Component.CENTER_ALIGNMENT);
         email.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -64,6 +42,10 @@ public class JTableClass {
         dobLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         submit.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        JPanel container = new JPanel();
+        container.setBorder(BorderFactory.createTitledBorder("Add New Contact"));
+        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
+        container.setLayout(layout);
         container.add(fnameLabel);
         container.add(fname);
         container.add(lnameLabel);
@@ -74,7 +56,7 @@ public class JTableClass {
         container.add(dob);
         container.add(submit);
 
-        topPanel.add(container);
+        panel.add(container, BorderLayout.CENTER);
 
         submit.addActionListener(new ActionListener() {
             @Override
@@ -82,30 +64,13 @@ public class JTableClass {
                 Contact c = new Contact(fname.getText(), lname.getText(), email.getText(), convertDateToSQL(dob.getText()));
                 addRowtoTable(table, c, 1);
                 clearFields(fname, lname, email, dob);
+                cards.show(body, "View Contacts");
             }
         });
-
-        model = new DefaultTableModel();
-        model.addColumn("First Name");
-        model.addColumn("Last Name");
-        model.addColumn("Email");
-        model.addColumn("Date of Birth");
-
-        table = new JTable(model);
-        table.setFillsViewportHeight(true);
-
-        JScrollPane scr = new JScrollPane(table);
-
-        bottomPanel.setLayout(new BorderLayout());
-        bottomPanel.add(scr, BorderLayout.CENTER);
-
-        frame.add(topPanel);
-        frame.add(bottomPanel);
-
-        displayTable();
     }
 
-    public void addRowtoTable(JTable table, Contact c, int addRowDB){
+
+    public static void addRowtoTable(JTable table, Contact c, int addRowDB){
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.addRow(new Object[]{c.getFirstName(), c.getLastName(), c.getEmail(), c.getDob().toString()});
 
@@ -114,7 +79,24 @@ public class JTableClass {
         }
     }
 
-    public void displayTable(){
+    public static JTable createTable(JTable table, DefaultTableModel model){
+        model = new DefaultTableModel();
+        model.addColumn("First Name");
+        model.addColumn("Last Name");
+        model.addColumn("Email");
+        model.addColumn("Date of Birth");
+        table = new JTable(model);
+        table.setFillsViewportHeight(true);
+        return table;
+    }
+
+    public static void displayTable(JTable table, JPanel panel){
+
+        JScrollPane scr = new JScrollPane(table);
+
+        panel.setLayout(new BorderLayout());
+        panel.add(scr, BorderLayout.CENTER);
+
         JDBCClass db = new JDBCClass();
         java.util.List<Contact> contacts = db.getAllContacts();
 
@@ -123,19 +105,19 @@ public class JTableClass {
         }
     }
 
-    public void clearFields(JTextField fname, JTextField lname, JTextField email, JTextField dob){
+    public static void clearFields(JTextField fname, JTextField lname, JTextField email, JTextField dob){
         fname.setText("");
         lname.setText("");
         email.setText("");
         dob.setText("");
     }
 
-    public void addRowtoDB(Contact c){
+    public static void addRowtoDB(Contact c){
         JDBCClass db = new JDBCClass();
         db.insertContact(c);
     }
 
-    public java.sql.Date convertDateToSQL(String date){
+    public static java.sql.Date convertDateToSQL(String date){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         java.sql.Date newDOB = new java.sql.Date(new java.util.Date().getTime());
         try {
@@ -146,4 +128,7 @@ public class JTableClass {
         return newDOB;
     }
 
+    public static void showNewContact(JPanel body, CardLayout cards){
+
+    }
 }
