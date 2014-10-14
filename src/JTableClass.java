@@ -3,14 +3,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 
-/**
- * Created by admin on October/13/14.
- */
 public class JTableClass {
 
     JFrame frame;
@@ -23,7 +18,6 @@ public class JTableClass {
     JLabel emailLabel;
     JLabel dobLabel;
     JButton submit;
-    JLabel output;
 
     DefaultTableModel model;
     JTable table;
@@ -46,27 +40,41 @@ public class JTableClass {
         emailLabel = new JLabel("Email");
         dobLabel = new JLabel("Date of Birth");
         submit = new JButton("Submit");
+        fname.setMaximumSize(fname.getPreferredSize());
+        lname.setMaximumSize(fname.getPreferredSize());
+        email.setMaximumSize(fname.getPreferredSize());
+        dob.setMaximumSize(fname.getPreferredSize());
 
-        output = new JLabel();
-        output.setBackground(Color.cyan);
-        output.setSize(100, 25);
+        topPanel.setPreferredSize(new Dimension(600, 230));
+        bottomPanel.setPreferredSize(new Dimension(600, 770));
 
-        bottomPanel.setBackground(Color.blue);
-        topPanel.setBackground(Color.RED);
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 
-        topPanel.setPreferredSize(new Dimension(600, 500));
-        bottomPanel.setPreferredSize(new Dimension(600, 500));
+        JPanel container = new JPanel();
+        container.setBorder(BorderFactory.createTitledBorder("Add New Contact"));
+        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
+        container.setLayout(layout);
+        fname.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lname.setAlignmentX(Component.CENTER_ALIGNMENT);
+        email.setAlignmentX(Component.CENTER_ALIGNMENT);
+        dob.setAlignmentX(Component.CENTER_ALIGNMENT);
+        fnameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lnameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        dobLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        submit.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        topPanel.add(fnameLabel);
-        topPanel.add(fname);
-        topPanel.add(lnameLabel);
-        topPanel.add(lname);
-        topPanel.add(emailLabel);
-        topPanel.add(email);
-        topPanel.add(dobLabel);
-        topPanel.add(dob);
-        topPanel.add(submit);
-        topPanel.add(output);
+        container.add(fnameLabel);
+        container.add(fname);
+        container.add(lnameLabel);
+        container.add(lname);
+        container.add(emailLabel);
+        container.add(email);
+        container.add(dobLabel);
+        container.add(dob);
+        container.add(submit);
+
+        topPanel.add(container);
 
         submit.addActionListener(new ActionListener() {
             @Override
@@ -85,7 +93,6 @@ public class JTableClass {
 
         table = new JTable(model);
         table.setFillsViewportHeight(true);
-        table.setBackground(Color.CYAN);
 
         JScrollPane scr = new JScrollPane(table);
 
@@ -124,7 +131,6 @@ public class JTableClass {
     }
 
     public void addRowtoDB(Contact c){
-
         JDBCClass db = new JDBCClass();
         db.insertContact(c);
     }
